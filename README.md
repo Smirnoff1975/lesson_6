@@ -29,8 +29,12 @@
   VM VirtualBox 7.0.10, OS Ubuntu 24.04.03
 
 # Команды и их описание
-  # Сервер
-  root@srv2:~# apt list --installed|grep nfs
+# Сервер
+
+root@srv2:~# apt list --installed|grep nfs
+
+-- смотрим наличие пакетов, для сервера nfs-kernel-server, если их нет ставим 
+
 root@srv2:~# mkdir -p /srv/share/upload
 root@srv2:~# chown -R nobody:nogroup /srv/share
 root@srv2:~# chmod 777 /srv/share/upload
