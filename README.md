@@ -29,6 +29,33 @@
   VM VirtualBox 7.0.10, OS Ubuntu 24.04.03
 
 # Команды и их описание
+  #Сервер
+  root@srv2:~# apt list --installed|grep nfs
+root@srv2:~# mkdir -p /srv/share/upload
+root@srv2:~# chown -R nobody:nogroup /srv/share
+root@srv2:~# chmod 777 /srv/share/upload
+root@srv2:~# ls -l /srv/share
+root@srv2:~# cat >> /etc/exports <<EOF
+/srv/share 192.168.0.0/24(rw,sync,root_squash)
+EOF
+root@srv2:~# cat /etc/exports
+root@srv2:~# exportfs -ra
+root@srv2:~# exportfs -s
+root@srv2:~# ip -br a
+root@srv2:~# cd /srv/share/upload/
+root@srv2:/srv/share/upload# touch check_file
+root@srv2:/srv/share/upload# ls
+root@srv2:/srv/share/upload# reboot
+usr1@srv2:~$ ls /srv/share/upload/
+usr1@srv2:~$ sudo exportfs -s
+usr1@srv2:~$ showmount -a
+usr1@srv2:~$ cd /srv/share/upload/
+usr1@srv2:/srv/share/upload$ ls -l
+
+
+
+
+
 
 # Протокол сервер
 
@@ -65,39 +92,6 @@ See https://ubuntu.com/esm or run: sudo pro status
 Last login: Tue Jul 21 21:24:59 2026 from 192.168.0.106
 usr1@srv2:~$ sudo -i
 [sudo] password for usr1:
-root@srv2:~# cat /etc/export
-cat: /etc/export: No such file or directory
-root@srv2:~# cat /etc/exports
-# /etc/exports: the access control list for filesystems which may be exported
-#               to NFS clients.  See exports(5).
-#
-# Example for NFSv2 and NFSv3:
-# /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)
-#
-# Example for NFSv4:
-# /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
-# /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
-#
-/srv/share 192.168.0.0/24(rw,sync,root_squash)
-root@srv2:~# vi /etc/exports
-root@srv2:~# cat /etc/exports
-# /etc/exports: the access control list for filesystems which may be exported
-#               to NFS clients.  See exports(5).
-#
-# Example for NFSv2 and NFSv3:
-# /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)
-#
-# Example for NFSv4:
-# /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
-# /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
-#
-root@srv2:~# exportfs -ra
-root@srv2:~# rm -r /srv
-root@srv2:~#
-root@srv2:~#
-root@srv2:~#
-root@srv2:~#
-root@srv2:~#
 root@srv2:~#
 root@srv2:~# apt list --installed|grep nfs
 
