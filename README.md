@@ -191,7 +191,9 @@ usr1@srv1:/mnt/upload$ ls -l
 # Протокол сервер
 
 login as: usr1
+
 usr1@192.168.0.110's password:
+
 Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.8.0-136-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -221,36 +223,54 @@ See https://ubuntu.com/esm or run: sudo pro status
 
 
 Last login: Tue Jul 21 21:24:59 2026 from 192.168.0.106
+
 usr1@srv2:~$ sudo -i
+
 [sudo] password for usr1:
+
 root@srv2:~#
+
 root@srv2:~# apt list --installed|grep nfs
 
 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
 
 libnfsidmap1/noble-updates,now 1:2.6.4-3ubuntu5.1 amd64 [installed,automatic]
+
 nfs-common/noble-updates,now 1:2.6.4-3ubuntu5.1 amd64 [installed]
+
 nfs-kernel-server/noble-updates,now 1:2.6.4-3ubuntu5.1 amd64 [installed]
+
 root@srv2:~# mkdir -p /srv/share/upload
+
 root@srv2:~# chown -R nobody:nogroup /srv/share
+
 root@srv2:~# chmod 777 /srv/share/upload
+
 root@srv2:~# ls -l /srv/share
+
 total 4
+
 drwxrwxrwx 2 nobody nogroup 4096 Jul 22 19:01 upload
+
 root@srv2:~# cat >> /etc/exports <<EOF
+
 /srv/share 192.168.0.0/24(rw,sync,root_squash)
+
 EOF
+
 root@srv2:~# cat /etc/exports
+
 # /etc/exports: the access control list for filesystems which may be exported
-#               to NFS clients.  See exports(5).
-#
-# Example for NFSv2 and NFSv3:
-# /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)
-#
-# Example for NFSv4:
-# /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
-# /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
-#
+
+##               to NFS clients.  See exports(5).
+##
+## Example for NFSv2 and NFSv3:
+## /srv/homes       hostname1(rw,sync,no_subtree_check) hostname2(ro,sync,no_subtree_check)
+##
+## Example for NFSv4:
+## /srv/nfs4        gss/krb5i(rw,sync,fsid=0,crossmnt,no_subtree_check)
+## /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
+##
 /srv/share 192.168.0.0/24(rw,sync,root_squash)
 root@srv2:~# exportfs -ra
 exportfs: /etc/exports [1]: Neither 'subtree_check' or 'no_subtree_check' specified for export "192.168.0.0/24:/srv/share".
