@@ -33,28 +33,71 @@
 
 root@srv2:~# apt list --installed|grep nfs
 
--- смотрим наличие пакетов, для сервера nfs-kernel-server, если их нет ставим 
+-- смотрим наличие пакетов, для сервера nfs-kernel-server, если их нет ставим через apt install ...
 
 root@srv2:~# mkdir -p /srv/share/upload
+
+-- создаем иерархию папок для опытов
+
 root@srv2:~# chown -R nobody:nogroup /srv/share
+
+-- меняем владельца на nobody
+
 root@srv2:~# chmod 777 /srv/share/upload
-root@srv2:~# ls -l /srv/share
+
+-- меняем права на папку - все для всех
+
 root@srv2:~# cat >> /etc/exports <<EOF
 /srv/share 192.168.0.0/24(rw,sync,root_squash)
 EOF
+
+-- добавляем в файл /etc/exports запись о новой фс NFS, описываем ограничения по адресам, прописываем параметры доступа
+
 root@srv2:~# cat /etc/exports
+
+-- проверяем
+
 root@srv2:~# exportfs -ra
+
+-- экспортируем все фс из файла /etc/exports - сообщаем службам NFS
+
 root@srv2:~# exportfs -s
+
+-- выводим список фс о котором знают службы NFS, проверяем что наш есть
+
 root@srv2:~# ip -br a
+
+-- показываем ip адрес сервера
+
 root@srv2:~# cd /srv/share/upload/
+
 root@srv2:/srv/share/upload# touch check_file
+
 root@srv2:/srv/share/upload# ls
+
+-- переходим в опытную папку, создаем там тестовый файл check_file для проверки на клиенте
+
 root@srv2:/srv/share/upload# reboot
+
+-- после настройки клиента и успешного монтрирования нашей фс перезагружаемся для финального испытания
+
 usr1@srv2:~$ ls /srv/share/upload/
+
+-- смотрим что после перезагрузки файлы на месте
+
 usr1@srv2:~$ sudo exportfs -s
+
+-- смотрим что после перезагрузки наша фс NFS экспортируется автоматически
+
 usr1@srv2:~$ showmount -a
+
+-- проверяем, активные подключения к нашей фс с других хостов
+
 usr1@srv2:~$ cd /srv/share/upload/
+
 usr1@srv2:/srv/share/upload$ ls -l
+
+-- проверяем наличие финального файла
 
 
 
